@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MyToolbar">
+        <attr name="cityText" format="reference"/>
+        <attr name="isShowSearchView" format="boolean"/>
+        <attr name="rightButton" format="reference"/>
+        <attr name="layout" format="reference"/>
+    </declare-styleable>
+</resources>

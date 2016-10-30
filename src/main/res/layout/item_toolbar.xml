@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <TextView
+                android:gravity="center"
+                android:id="@+id/tv_city"
+                android:text="北京"
+                android:textSize="17sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"/>
+            <ImageView
+                android:layout_toRightOf="@+id/tv_city"
+                android:src="@drawable/icon_arrow_down"
+                android:layout_width="45dp"
+                android:layout_height="45dp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_weight="4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <EditText
+                android:id="@+id/search_view"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@drawable/selector_search_view"
+                android:drawableLeft="@mipmap/magnifying_glass"
+                android:singleLine="true"
+                android:hint="请输入商品名，品名，或商圈..."
+                android:textSize="15sp"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@mipmap/nav_icon_scan_nor"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/imageButton"
+                android:layout_centerInParent="true"
+                />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>
