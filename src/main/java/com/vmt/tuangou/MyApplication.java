@@ -6,12 +6,14 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.yolanda.nohttp.NoHttp;
 
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.update.BmobUpdateAgent;
 
 /**
  * Created by SilverBullet on 2016/10/1.
  */
 
 public class MyApplication extends Application {
+    private boolean flags = true;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -23,5 +25,13 @@ public class MyApplication extends Application {
 
 //        Bmob的初始化
         Bmob.initialize(this, "3e7c6cf626f6ea78c7ae0ec75db214ef");
+
+        if(flags == true) {
+            flags = false;
+            BmobUpdateAgent.initAppVersion();
+        }
+//        Xutils初始化
+//        x.Ext.init(this);
+
     }
 }

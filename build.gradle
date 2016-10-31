@@ -11,7 +11,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
-        multiDexEnabled true
+
     }
     buildTypes {
         release {
@@ -19,7 +19,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    //   在libs下添加百度地图sdk后，写这句话
+    //   在libs下添加sdk后，写这句话
     sourceSets{
         main{
             jniLibs.srcDirs = ['libs']
@@ -40,5 +40,7 @@ dependencies {
     compile 'cn.bmob.android:bmob-sdk:3.5.0'
     //            {exclude group: 'com.google.code.gson'}
     //    compile 'com.google.code.gson:gson:2.7'
+//    compile 'org.xutils:xutils:3.3.36'
     compile project(':libs_PullToRefresh')
+    compile project(':weiboSDK')
 }

@@ -1,8 +1,8 @@
 package com.vmt.tuangou.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,7 +14,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sina.weibo.sdk.openapi.models.User;
 import com.vmt.tuangou.R;
+import com.vmt.tuangou.core.WeiboUtils;
+import com.vmt.tuangou.listener.ISinaInfo;
+import com.vmt.tuangou.listener.ISinaLogin;
 import com.vmt.tuangou.listener.MyTextWatcher;
 import com.vmt.tuangou.nohttp.CallServer;
 import com.vmt.tuangou.nohttp.HttpListener;
@@ -31,8 +35,10 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 
 
-public class LoginActivity extends AppCompatActivity implements HttpListener<String> {
+public class LoginActivity extends Activity implements HttpListener<String> {
 
+    @InjectView(R.id.getWBInfo)
+    Button mGetWBInfo;
     @InjectView(R.id.username)
     EditText mUsername;
     @InjectView(R.id.password)
@@ -83,14 +89,67 @@ public class LoginActivity extends AppCompatActivity implements HttpListener<Str
      */
     private int mCount;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.inject(this);
         init();
+        WeiboUtils.initWeibo(this);
         initAnimation();
 
+    }
+
+
+
+    @OnClick({R.id.getWBInfo,R.id.sina_weibo,R.id.tv_quick_register, R.id.tv_count_register, R.id.tv_register, R.id.login_btn, R.id.btn_get_code})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.login_btn:
+                login();
+                break;
+            case R.id.tv_quick_register:
+                mViewLineRight.startAnimation(mAnimationRight);
+                break;
+            case R.id.tv_count_register:
+                mViewLineLeft.startAnimation(mAnimationLeft);
+                break;
+            case R.id.tv_register:
+                Intent intent = new Intent(this, RegisterActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.btn_get_code:
+                countDownTimer();
+                break;
+            case R.id.sina_weibo:
+//                mSsoHandler.authorizeWeb(new AuthListener());
+                WeiboUtils.loginWeibo(this, new ISinaLogin() {
+                    @Override
+                    public void weiboLoginSuccess() {
+                        Toast.makeText(LoginActivity.this, "微博登录成功", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void weiboLoginFalure() {
+                        Toast.makeText(LoginActivity.this, "微博登录失败", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            case R.id.getWBInfo :
+                WeiboUtils.getWeiboInfo(this, new ISinaInfo() {
+                    @Override
+                    public void getWBInfoSuccess(User user) {
+                        Toast.makeText(LoginActivity.this, "微博用户获取成功"+user.screen_name, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void getWBInfoFalure() {
+                        Toast.makeText(LoginActivity.this, "获取失败", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+        }
     }
 
     private void init() {
@@ -112,8 +171,11 @@ public class LoginActivity extends AppCompatActivity implements HttpListener<Str
             }
         });
     }
-    /**验证码计时**/
-    public void countDownTimer(){
+
+    /**
+     * 验证码计时
+     **/
+    public void countDownTimer() {
         mBtnGetCode.setEnabled(false);
         mCount = 60;
         final Timer timer = new Timer();
@@ -236,27 +298,7 @@ public class LoginActivity extends AppCompatActivity implements HttpListener<Str
         }
     }
 
-    @OnClick({R.id.tv_quick_register, R.id.tv_count_register, R.id.tv_register,R.id.login_btn,R.id.btn_get_code})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.login_btn:
-                login();
-                break;
-            case R.id.tv_quick_register:
-                mViewLineRight.startAnimation(mAnimationRight);
-                break;
-            case R.id.tv_count_register:
-                mViewLineLeft.startAnimation(mAnimationLeft);
-                break;
-            case R.id.tv_register:
-                Intent intent = new Intent(this, RegisterActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.btn_get_code:
-                countDownTimer();
-                break;
-        }
-    }
+
 }
 
 
