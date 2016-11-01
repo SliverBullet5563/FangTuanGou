@@ -15,6 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sina.weibo.sdk.openapi.models.User;
+import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.Tencent;
+import com.tencent.tauth.UiError;
 import com.vmt.tuangou.R;
 import com.vmt.tuangou.core.WeiboUtils;
 import com.vmt.tuangou.listener.ISinaInfo;
@@ -67,6 +70,8 @@ public class LoginActivity extends Activity implements HttpListener<String> {
     Button mBtnLogin;
     @InjectView(R.id.btn_get_code)
     Button mBtnGetCode;
+    @InjectView(R.id.qq_account)
+    TextView mQQAccount;
 
     private Animation mAnimationRight;
     private Animation mAnimationLeft;
@@ -88,6 +93,8 @@ public class LoginActivity extends Activity implements HttpListener<String> {
      * 倒计时秒数
      */
     private int mCount;
+    private Tencent mTencent;
+    private IUiListener mLoginListener;
 
 
     @Override
@@ -103,7 +110,7 @@ public class LoginActivity extends Activity implements HttpListener<String> {
 
 
 
-    @OnClick({R.id.getWBInfo,R.id.sina_weibo,R.id.tv_quick_register, R.id.tv_count_register, R.id.tv_register, R.id.login_btn, R.id.btn_get_code})
+    @OnClick({R.id.qq_account,R.id.getWBInfo,R.id.sina_weibo,R.id.tv_quick_register, R.id.tv_count_register, R.id.tv_register, R.id.login_btn, R.id.btn_get_code})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_btn:
@@ -121,6 +128,9 @@ public class LoginActivity extends Activity implements HttpListener<String> {
                 break;
             case R.id.btn_get_code:
                 countDownTimer();
+                break;
+            case R.id.qq_account:
+                mTencent.login(this, "all", mLoginListener);
                 break;
             case R.id.sina_weibo:
 //                mSsoHandler.authorizeWeb(new AuthListener());
@@ -149,6 +159,27 @@ public class LoginActivity extends Activity implements HttpListener<String> {
                     }
                 });
                 break;
+        }
+    }
+
+
+
+    private class BaseUiListener implements IUiListener {
+
+
+        @Override
+        public void onComplete(Object o) {
+
+        }
+
+        @Override
+        public void onError(UiError uiError) {
+
+        }
+
+        @Override
+        public void onCancel() {
+
         }
     }
 
@@ -272,6 +303,10 @@ public class LoginActivity extends Activity implements HttpListener<String> {
 
         // {"username" : "123456", "password" : "123456"}
         CallServer.getInstance().add(LoginActivity.this, 0, request, this, true, true);
+
+        mLoginListener = new BaseUiListener() {
+
+        };
     }
 
     @Override
